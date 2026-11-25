@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Expenses- Expense Tracker {% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0cqb;">
+    <h2> My Expenses </h2>
+    <a href="{{ url_for('add_expense')}}" class="btn">+ Add Expenses</a>
+</div>
+
+
+
+<div class="card">
+    {% if expenses %} 
+       {%for expense in expenses %} 
+       <div class="expense-row">
+          <div>
+             <span class="badge">{{ expense.category }}</span>
+             <strong style="margin-left: 0.5rem;">{{ expense.description | upper}}</strong>
+             </br>
+             <small style="color: #888;">{{ expense.date }}</small>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <spam class="amount">₹{{ expense.amount }}</spam>
+              <a href="{{ url_for('expense_detail', expense_id=expense.id) }}" class="btn">view</a>
+            <form method="POST"
+            action="{{url_for('delete_expense', expense_id=expense.id)}}"
+            style="display: inline;">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this expense?')">
+                Delete
+            </button>
+            </form>
+          </div>
+       </div>
+       {% endfor %}
+
+    {% else %}   
+         <p style="color: #888; text-align: center; padding: 2rem;">
+            No Expenses recorded yet.
+            <a href="{{url_for('add_expense')}}">Add your first one!</a>
+         </p>
+    
+    {% endif%}
+
+</div>
+
+{% endblock %}
